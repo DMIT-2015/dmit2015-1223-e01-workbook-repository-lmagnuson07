@@ -1,7 +1,7 @@
 package dmit2015.faces;
 
-import dmit2015.restclient.Student;
-import dmit2015.restclient.StudentMpRestClient;
+import dmit2015.restclient.TodoItem;
+import dmit2015.restclient.TodoItemMpRestClient;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,15 +18,15 @@ import jakarta.inject.Named;
 import java.io.Serial;
 import java.io.Serializable;
 
-@Named("currentStudentEditView")
+@Named("currentTodoItemEditView")
 @ViewScoped
-public class StudentEditView implements Serializable {
+public class TodoItemEditView implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Inject
     @RestClient
-    private StudentMpRestClient _studentMpRestClient;
+    private TodoItemMpRestClient _todoitemMpRestClient;
 
     @Inject
     private FirebaseLoginSession _firebaseLoginSession;
@@ -38,7 +38,7 @@ public class StudentEditView implements Serializable {
     private String editId;
 
     @Getter
-    private Student existingStudent;
+    private TodoItem existingTodoItem;
 
     @PostConstruct
     public void init() {
@@ -46,8 +46,8 @@ public class StudentEditView implements Serializable {
             if (editId != null) {
                 String token = _firebaseLoginSession.getToken();
                 String userUID = _firebaseLoginSession.getUserUID();
-                existingStudent = _studentMpRestClient.findById(userUID, editId, token);
-                if (existingStudent == null) {
+                existingTodoItem = _todoitemMpRestClient.findById(userUID, editId, token);
+                if (existingTodoItem == null) {
                     Faces.redirect(Faces.getRequestURI().substring(0, Faces.getRequestURI().lastIndexOf("/")) + "/index.xhtml");
                 }
             } else {
@@ -61,7 +61,7 @@ public class StudentEditView implements Serializable {
         try {
             String token = _firebaseLoginSession.getToken();
             String userUID = _firebaseLoginSession.getUserUID();
-            _studentMpRestClient.update(userUID, editId, existingStudent, token);
+            _todoitemMpRestClient.update(userUID, editId, existingTodoItem, token);
             Messages.addFlashGlobalInfo("Update was successful.");
             nextPage = "index?faces-redirect=true";
         } catch (Exception e) {

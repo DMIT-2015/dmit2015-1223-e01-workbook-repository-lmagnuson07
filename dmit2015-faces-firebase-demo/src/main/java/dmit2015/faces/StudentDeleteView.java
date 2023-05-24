@@ -15,21 +15,16 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
-import java.io.Serial;
 import java.io.Serializable;
 
-@Named("currentStudentEditView")
+@Named("currentStudentDeleteView")
 @ViewScoped
-public class StudentEditView implements Serializable {
-    @Serial
+public class StudentDeleteView implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
     @RestClient
     private StudentMpRestClient _studentMpRestClient;
-
-    @Inject
-    private FirebaseLoginSession _firebaseLoginSession;
 
     @Inject
     @ManagedProperty("#{param.editId}")
@@ -40,33 +35,30 @@ public class StudentEditView implements Serializable {
     @Getter
     private Student existingStudent;
 
+    @Inject
+    private FirebaseLoginSession _firebaseLoginSession;
+
     @PostConstruct
     public void init() {
-        if (!Faces.isPostback()) {
-            if (editId != null) {
-                String token = _firebaseLoginSession.getToken();
-                String userUID = _firebaseLoginSession.getUserUID();
-                existingStudent = _studentMpRestClient.findById(userUID, editId, token);
-                if (existingStudent == null) {
-                    Faces.redirect(Faces.getRequestURI().substring(0, Faces.getRequestURI().lastIndexOf("/")) + "/index.xhtml");
-                }
-            } else {
-                Faces.redirect(Faces.getRequestURI().substring(0, Faces.getRequestURI().lastIndexOf("/")) + "/index.xhtml");
-            }
+        String token = _firebaseLoginSession.getToken();
+        String userUID = _firebaseLoginSession.getUserUID();
+        existingStudent = _studentMpRestClient.findById(userUID, editId, token);
+        if (existingStudent == null) {
+            Faces.redirect(Faces.getRequestURI().substring(0, Faces.getRequestURI().lastIndexOf("/")) + "/index.xhtml");
         }
     }
 
-    public String onUpdate() {
-        String nextPage = null;
+    public String onDelete() {
+        String nextPage = "";
         try {
             String token = _firebaseLoginSession.getToken();
             String userUID = _firebaseLoginSession.getUserUID();
-            _studentMpRestClient.update(userUID, editId, existingStudent, token);
-            Messages.addFlashGlobalInfo("Update was successful.");
+            _studentMpRestClient.delete(userUID,editId, token);
+            Messages.addFlashGlobalInfo("Delete was successful.");
             nextPage = "index?faces-redirect=true";
         } catch (Exception e) {
             e.printStackTrace();
-            Messages.addGlobalError("Update was not successful.");
+            Messages.addGlobalError("Delete not successful.");
         }
         return nextPage;
     }

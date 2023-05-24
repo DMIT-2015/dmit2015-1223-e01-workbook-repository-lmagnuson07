@@ -14,38 +14,29 @@
         template="/WEB-INF/faces-templates/layout.xhtml"
 >
 
-    <ui:param name="title" value="Student - Create"/>
+    <ui:param name="title" value="TodoItem - Create"/>
 
     <ui:define name="maincontent">
         <f:metadata>
             <f:viewAction action="#{firebaseLoginSession.checkForToken}" />
         </f:metadata>
 
-        <h1>Create Student</h1>
+        <h1>Create TodoItem</h1>
 
         <p:messages id="messages"/>
 
         <h:form prependId="false">
             <p:focus context="panel"/>
 
-            <p:panel id="panel" header="Student Details">
+            <p:panel id="panel" header="TodoItem Details">
                 <div class="ui-fluid">
                     <div class="field">
-                        <p:outputLabel for="@next">First Name</p:outputLabel>
+                        <p:outputLabel for="@next">Description</p:outputLabel>
                         <p:inputText
-                                id="firstName"
-                                value="#{currentStudentCreateView.newStudent.firstName}">
+                                id="description"
+                                value="#{currentTodoItemCreateView.newTodoItem.description}">
                         </p:inputText>
                     </div>
-
-                    <div class="field">
-                        <p:outputLabel for="@next">Last Name</p:outputLabel>
-                        <p:inputText
-                                id="lastName"
-                                value="#{currentStudentCreateView.newStudent.lastName}">
-                        </p:inputText>
-                    </div>
-
 
                 </div>
 
@@ -53,7 +44,7 @@
                         id="createButton"
                         value="Create"
                         icon="pi pi-save"
-                        action="#{currentStudentCreateView.onCreateNew()}"
+                        action="#{currentTodoItemCreateView.onCreateNew()}"
                         update=":messages @form"
                 />
 

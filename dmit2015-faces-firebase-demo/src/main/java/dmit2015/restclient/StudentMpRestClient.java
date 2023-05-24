@@ -38,29 +38,29 @@ import java.util.LinkedHashMap;
  * </code>
  */
 @RequestScoped
-@RegisterRestClient(baseUri = "https://dmit2015-1223-lmagnuson07-default-rtdb.firebaseio.com")
+@RegisterRestClient
 public interface StudentMpRestClient {
 
-    final String DOCUMENT_URL = "/Student";
+    final String DOCUMENT_URL = "/Student/{userUID}";
 
     @POST
     @Path(DOCUMENT_URL + ".json")
-    JsonObject create(Student newStudent);
+    JsonObject create(@PathParam("userUID") String userId, Student newStudent, @QueryParam("auth") String token);
 
     @GET
     @Path(DOCUMENT_URL + ".json")
-    LinkedHashMap<String, Student> findAll();
+    LinkedHashMap<String, Student> findAll(@PathParam("userUID") String userId, @QueryParam("auth") String token);
 
     @GET
     @Path(DOCUMENT_URL + "/{key}.json")
-    Student findById(@PathParam("key") String key);
+    Student findById(@PathParam("userUID") String userId, @PathParam("key") String key, @QueryParam("auth") String token);
 
     @PUT
     @Path(DOCUMENT_URL + "/{key}.json")
-    Student update(@PathParam("key") String key, Student updatedStudent);
+    Student update(@PathParam("userUID") String userId, @PathParam("key") String key, Student updatedStudent, @QueryParam("auth") String token);
 
     @DELETE
     @Path(DOCUMENT_URL + "/{key}.json")
-    void delete(@PathParam("key") String key);
+    void delete(@PathParam("userUID") String userId, @PathParam("key") String key, @QueryParam("auth") String token);
 
 }

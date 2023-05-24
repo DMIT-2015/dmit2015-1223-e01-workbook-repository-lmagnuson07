@@ -1,7 +1,7 @@
 package dmit2015.faces;
 
-import dmit2015.restclient.Student;
-import dmit2015.restclient.StudentMpRestClient;
+import dmit2015.restclient.TodoItem;
+import dmit2015.restclient.TodoItemMpRestClient;
 import lombok.Getter;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.omnifaces.cdi.ViewScoped;
@@ -16,28 +16,28 @@ import java.io.Serializable;
 import java.util.Map;
 
 
-@Named("currentStudentListView")
+@Named("currentTodoItemListView")
 @ViewScoped
-public class StudentListView implements Serializable {
+public class TodoItemListView implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Inject
     @RestClient
-    private StudentMpRestClient _studentMpRestClient;
+    private TodoItemMpRestClient _todoitemMpRestClient;
 
     @Inject
     private FirebaseLoginSession _firebaseLoginSession;
 
     @Getter
-    private Map<String, Student> studentMap;
+    private Map<String, TodoItem> todoitemMap;
 
     @PostConstruct  // After @Inject is complete
     public void init() {
         try {
             String token = _firebaseLoginSession.getToken();
             String userUID = _firebaseLoginSession.getUserUID();
-            studentMap = _studentMpRestClient.findAll(userUID, token);
+            todoitemMap = _todoitemMpRestClient.findAll(userUID, token);
         } catch (Exception ex) {
             Messages.addGlobalError(ex.getMessage());
         }

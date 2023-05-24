@@ -1,7 +1,7 @@
 package dmit2015.faces;
 
-import dmit2015.restclient.Student;
-import dmit2015.restclient.StudentMpRestClient;
+import dmit2015.restclient.TodoItem;
+import dmit2015.restclient.TodoItemMpRestClient;
 
 import jakarta.json.JsonObject;
 import lombok.Getter;
@@ -12,16 +12,18 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
-@Named("currentStudentCreateView")
+import java.time.LocalDateTime;
+
+@Named("currentTodoItemCreateView")
 @RequestScoped
-public class StudentCreateView {
+public class TodoItemCreateView {
 
     @Inject
     @RestClient
-    private StudentMpRestClient _studentMpRestClient;
+    private TodoItemMpRestClient _todoitemMpRestClient;
 
     @Getter
-    private Student newStudent = new Student();
+    private TodoItem newTodoItem = new TodoItem();
 
     @Inject
     private FirebaseLoginSession _firebaseLoginSession;
@@ -31,9 +33,10 @@ public class StudentCreateView {
         try {
             String token = _firebaseLoginSession.getToken();
             String userUID = _firebaseLoginSession.getUserUID();
-            JsonObject responseBody = _studentMpRestClient.create(userUID, newStudent, token);
+            newTodoItem.setCreateTime(LocalDateTime.now());
+            JsonObject responseBody = _todoitemMpRestClient.create(userUID, newTodoItem, token);
             String documentKey = responseBody.getString("name");
-            newStudent = new Student();
+            newTodoItem = new TodoItem();
             Messages.addFlashGlobalInfo("Create was successful. {0}", documentKey);
             nextPage = "index?faces-redirect=true";
         } catch (Exception e) {
