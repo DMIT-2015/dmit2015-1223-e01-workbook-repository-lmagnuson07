@@ -25,11 +25,11 @@ public class StudentDetailsView implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    @RestClient
-    private StudentMpRestClient _studentMpRestClient;
+    private FirebaseLoginSession _firebaseLoginSession;
 
     @Inject
-    private FirebaseLoginSession _firebaseLoginSession;
+    @RestClient
+    private StudentMpRestClient _studentMpRestClient;
 
     @Inject
     @ManagedProperty("#{param.editId}")
@@ -42,9 +42,8 @@ public class StudentDetailsView implements Serializable {
 
     @PostConstruct
     public void init() {
-        String token = _firebaseLoginSession.getToken();
-        String userUID = _firebaseLoginSession.getUserUID();
-        existingStudent = _studentMpRestClient.findById(userUID, editId, token);
+        String token = _firebaseLoginSession.getFirebaseUser().getIdToken();
+        existingStudent = _studentMpRestClient.findById(editId, token);
         if (existingStudent == null) {
             Faces.redirect(Faces.getRequestURI().substring(0, Faces.getRequestURI().lastIndexOf("/")) + "/index.xhtml");
         }

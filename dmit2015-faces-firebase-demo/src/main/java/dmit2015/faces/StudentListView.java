@@ -23,11 +23,11 @@ public class StudentListView implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    @RestClient
-    private StudentMpRestClient _studentMpRestClient;
+    private FirebaseLoginSession _firebaseLoginSession;
 
     @Inject
-    private FirebaseLoginSession _firebaseLoginSession;
+    @RestClient
+    private StudentMpRestClient _studentMpRestClient;
 
     @Getter
     private Map<String, Student> studentMap;
@@ -35,9 +35,8 @@ public class StudentListView implements Serializable {
     @PostConstruct  // After @Inject is complete
     public void init() {
         try {
-            String token = _firebaseLoginSession.getToken();
-            String userUID = _firebaseLoginSession.getUserUID();
-            studentMap = _studentMpRestClient.findAll(userUID, token);
+            String token = _firebaseLoginSession.getFirebaseUser().getIdToken();
+            studentMap = _studentMpRestClient.findAll(token);
         } catch (Exception ex) {
             Messages.addGlobalError(ex.getMessage());
         }

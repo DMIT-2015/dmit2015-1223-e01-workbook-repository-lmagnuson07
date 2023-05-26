@@ -41,26 +41,26 @@ import java.util.LinkedHashMap;
 @RegisterRestClient
 public interface StudentMpRestClient {
 
-    final String DOCUMENT_URL = "/Student/{userUID}";
+    final String DOCUMENT_URL = "/Student";
 
     @POST
     @Path(DOCUMENT_URL + ".json")
-    JsonObject create(@PathParam("userUID") String userId, Student newStudent, @QueryParam("auth") String token);
+    JsonObject create(Student newStudent, @QueryParam("auth") String token);
 
     @GET
     @Path(DOCUMENT_URL + ".json")
-    LinkedHashMap<String, Student> findAll(@PathParam("userUID") String userId, @QueryParam("auth") String token);
+    LinkedHashMap<String, Student> findAll(@QueryParam("auth") String token);
 
     @GET
     @Path(DOCUMENT_URL + "/{key}.json")
-    Student findById(@PathParam("userUID") String userId, @PathParam("key") String key, @QueryParam("auth") String token);
+    Student findById(@PathParam("key") String key, @QueryParam("auth") String token);
 
     @PUT
     @Path(DOCUMENT_URL + "/{key}.json")
-    Student update(@PathParam("userUID") String userId, @PathParam("key") String key, Student updatedStudent, @QueryParam("auth") String token);
+    Student update(@PathParam("key") String key, Student updatedStudent, @QueryParam("auth") String token);
 
     @DELETE
     @Path(DOCUMENT_URL + "/{key}.json")
-    void delete(@PathParam("userUID") String userId, @PathParam("key") String key, @QueryParam("auth") String token);
+    void delete(@PathParam("key") String key, @QueryParam("auth") String token);
 
 }

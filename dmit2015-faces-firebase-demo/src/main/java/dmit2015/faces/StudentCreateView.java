@@ -17,21 +17,20 @@ import jakarta.inject.Named;
 public class StudentCreateView {
 
     @Inject
+    private FirebaseLoginSession _firebaseLoginSession;
+
+    @Inject
     @RestClient
     private StudentMpRestClient _studentMpRestClient;
 
     @Getter
     private Student newStudent = new Student();
 
-    @Inject
-    private FirebaseLoginSession _firebaseLoginSession;
-
     public String onCreateNew() {
         String nextPage = null;
         try {
-            String token = _firebaseLoginSession.getToken();
-            String userUID = _firebaseLoginSession.getUserUID();
-            JsonObject responseBody = _studentMpRestClient.create(userUID, newStudent, token);
+            String token = _firebaseLoginSession.getFirebaseUser().getIdToken();
+            JsonObject responseBody = _studentMpRestClient.create(newStudent, token);
             String documentKey = responseBody.getString("name");
             newStudent = new Student();
             Messages.addFlashGlobalInfo("Create was successful. {0}", documentKey);

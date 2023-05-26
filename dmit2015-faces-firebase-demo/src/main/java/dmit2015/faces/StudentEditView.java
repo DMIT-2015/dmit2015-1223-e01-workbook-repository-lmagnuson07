@@ -25,11 +25,11 @@ public class StudentEditView implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    @RestClient
-    private StudentMpRestClient _studentMpRestClient;
+    private FirebaseLoginSession _firebaseLoginSession;
 
     @Inject
-    private FirebaseLoginSession _firebaseLoginSession;
+    @RestClient
+    private StudentMpRestClient _studentMpRestClient;
 
     @Inject
     @ManagedProperty("#{param.editId}")
@@ -44,9 +44,8 @@ public class StudentEditView implements Serializable {
     public void init() {
         if (!Faces.isPostback()) {
             if (editId != null) {
-                String token = _firebaseLoginSession.getToken();
-                String userUID = _firebaseLoginSession.getUserUID();
-                existingStudent = _studentMpRestClient.findById(userUID, editId, token);
+                String token = _firebaseLoginSession.getFirebaseUser().getIdToken();
+                existingStudent = _studentMpRestClient.findById(editId, token);
                 if (existingStudent == null) {
                     Faces.redirect(Faces.getRequestURI().substring(0, Faces.getRequestURI().lastIndexOf("/")) + "/index.xhtml");
                 }
@@ -59,9 +58,8 @@ public class StudentEditView implements Serializable {
     public String onUpdate() {
         String nextPage = null;
         try {
-            String token = _firebaseLoginSession.getToken();
-            String userUID = _firebaseLoginSession.getUserUID();
-            _studentMpRestClient.update(userUID, editId, existingStudent, token);
+            String token = _firebaseLoginSession.getFirebaseUser().getIdToken();
+            _studentMpRestClient.update(editId, existingStudent, token);
             Messages.addFlashGlobalInfo("Update was successful.");
             nextPage = "index?faces-redirect=true";
         } catch (Exception e) {
