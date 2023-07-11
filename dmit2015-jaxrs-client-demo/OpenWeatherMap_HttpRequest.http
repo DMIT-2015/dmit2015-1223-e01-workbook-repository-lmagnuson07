@@ -1,0 +1,2 @@
+### Get the weather in Edmonton
+GET https://api.openweathermap.org/data/2.5/weather?q=Edmonton&appid=9c92ea9c8b71fadfaf5cf8159ee4396b

@@ -1,0 +1,96 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:faces="jakarta.faces"
+        xmlns:ui="jakarta.faces.facelets"
+        xmlns:f="jakarta.faces.core"
+        xmlns:h="jakarta.faces.html"
+        xmlns:pt="jakarta.faces.passthrough"
+        xmlns:cc="jakarta.faces.composite"
+        xmlns:c="jakarta.tags.core"
+        xmlns:fn="jakarta.tags.functions"
+        xmlns:o="http://omnifaces.org/ui"
+        xmlns:of="http://omnifaces.org/functions"
+        xmlns:p="http://primefaces.org/ui"
+        template="/WEB-INF/faces-templates/layout.xhtml"
+>
+
+    <ui:param name="title" value="Expense - Create"/>
+
+    <ui:define name="maincontent">
+
+        <h1>Create Expense</h1>
+
+        <p:messages id="messages"/>
+
+        <h:form prependId="false">
+            <p:focus context="panel"/>
+
+            <p:panel id="panel" header="Category Details">
+                <div class="ui-fluid">
+                    <div class="field">
+                        <p:outputLabel for="@next">Description</p:outputLabel>
+                        <p:inputText
+                                id="description"
+                                value="#{currentExpenseCreateView.newExpense.description}">
+                        </p:inputText>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="@next">Category</p:outputLabel>
+                        <p:selectOneMenu id="categoryId" value="#{currentExpenseCreateView.selectedCategoryId}">
+                            <f:selectItem itemLabel="---select a category---" itemValue=""/>
+                            <f:selectItems value="#{currentExpenseCreateView.categorytList}"
+                                           var="currentCategoryItem"
+                                           itemLabel="#{currentCategoryItem.description}"
+                                           itemValue="#{currentCategoryItem.categoryId}" />
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="@next">Amount</p:outputLabel>
+                        <p:inputText
+                                id="amount"
+                                value="#{currentExpenseCreateView.newExpense.amount}">
+                        </p:inputText>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="@next">Total</p:outputLabel>
+                        <p:inputText
+                                id="total"
+                                value="#{currentExpenseCreateView.newExpense.total}">
+                        </p:inputText>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="@next">Date</p:outputLabel>
+                        <p:calendar
+                                id="expenseDate"
+                                value="#{currentExpenseCreateView.newExpense.expenseDate}"
+                                pattern="yyyy-MM-dd">
+                        </p:calendar>
+                    </div>
+
+
+                </div>
+
+                <p:commandButton
+                        id="createButton"
+                        value="Create"
+                        icon="pi pi-save"
+                        action="#{currentExpenseCreateView.onCreateNew()}"
+                        update=":messages @form"
+                />
+
+            </p:panel>
+
+            <p>
+                <p:link id="backToListLink" outcome="index" value="Back to List">
+                </p:link>
+            </p>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

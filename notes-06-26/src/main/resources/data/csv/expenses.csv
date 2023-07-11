@@ -1,0 +1,6 @@
+description,categoryId,amount,total,expenseDate
+"Groceries",3,124.54,1,2023-03-28
+"Kibble",4,82.65,1,2023-03-26
+"Diablo IV",2,89.99,1,2023-04-24
+"Tacos",3,25.12,1,2023-05-18
+"Tires",2,325.43,1,2023-05-18

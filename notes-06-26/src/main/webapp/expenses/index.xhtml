@@ -1,0 +1,108 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:faces="jakarta.faces"
+        xmlns:ui="jakarta.faces.facelets"
+        xmlns:f="jakarta.faces.core"
+        xmlns:h="jakarta.faces.html"
+        xmlns:pt="jakarta.faces.passthrough"
+        xmlns:cc="jakarta.faces.composite"
+        xmlns:c="jakarta.tags.core"
+        xmlns:fn="jakarta.tags.functions"
+        xmlns:o="http://omnifaces.org/ui"
+        xmlns:of="http://omnifaces.org/functions"
+        xmlns:p="http://primefaces.org/ui"
+        template="/WEB-INF/faces-templates/layout.xhtml"
+>
+
+    <ui:param name="title" value="Expense - List"/>
+
+    <ui:define name="maincontent">
+
+        <h1>Expense List</h1>
+
+        <p:messages id="messages"/>
+
+        <h:form prependId="false">
+
+            <p:commandButton value="Create New"
+                             action="create"
+                             icon="pi pi-database"
+            >
+            </p:commandButton>
+
+            <p:commandButton value="Import Data"
+                             icon="pi pi-file-import"
+                             action="#{currentExpenseListView.onImportData()}"
+                             update=":messages expensesTable"
+                             ajax="true"
+            >
+            </p:commandButton>
+
+            <p:dataTable id="expensesTable"
+                         value="#{currentExpenseListView.expenseList}"
+                         var="currentItem"
+                         rowKey="#{currentItem.expenseId}"
+                         paginator="true" rows="10"
+                         paginatorPosition="bottom">
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{currentItem.expenseId}"/>
+                </p:column>
+
+                <p:column headerText="Username">
+                    <h:outputText value="#{currentItem.username}">
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Description">
+                    <h:outputText value="#{currentItem.description}">
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Category">
+                    <h:outputText value="#{currentItem.categoriesByExpenseId.description}">
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Amount">
+                    <h:outputText value="#{currentItem.amount}">
+                        <f:convertNumber type="currency" locale="en_CA"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Total">
+                    <h:outputText value="#{currentItem.total}">
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Date">
+                    <h:outputText value="#{currentItem.expenseDate}">
+                        <f:convertDateTime type="localDate" pattern="MMM d, yyyy" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Action" exportable="false">
+                    <p:link id="editLink" outcome="edit" value="edit">
+                        <f:param name="editId" value="#{currentItem.expenseId}"/>
+                    </p:link>
+
+                    |
+
+                    <p:link id="detailsLink" outcome="details" value="details">
+                        <f:param name="editId" value="#{currentItem.expenseId}"/>
+                    </p:link>
+
+                    |
+
+                    <p:link id="deleteLink" outcome="delete" value="delete">
+                        <f:param name="editId" value="#{currentItem.expenseId}"/>
+                    </p:link>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

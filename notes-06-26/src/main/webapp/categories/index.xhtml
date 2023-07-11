@@ -1,0 +1,71 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:faces="jakarta.faces"
+        xmlns:ui="jakarta.faces.facelets"
+        xmlns:f="jakarta.faces.core"
+        xmlns:h="jakarta.faces.html"
+        xmlns:pt="jakarta.faces.passthrough"
+        xmlns:cc="jakarta.faces.composite"
+        xmlns:c="jakarta.tags.core"
+        xmlns:fn="jakarta.tags.functions"
+        xmlns:o="http://omnifaces.org/ui"
+        xmlns:of="http://omnifaces.org/functions"
+        xmlns:p="http://primefaces.org/ui"
+        template="/WEB-INF/faces-templates/layout.xhtml"
+>
+
+    <ui:param name="title" value="Category - List"/>
+
+    <ui:define name="maincontent">
+
+        <h1>Category List</h1>
+
+        <p:messages id="messages"/>
+
+        <h:form prependId="false">
+
+            <p:dataTable id="entityTable"
+                         value="#{currentCategoryListView.categoryList}"
+                         var="currentItem"
+                         rowKey="#{currentItem.categoryId}"
+                         paginator="true" rows="10"
+                         paginatorPosition="bottom">
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{currentItem.categoryId}"/>
+                </p:column>
+
+                <p:column headerText="Description">
+                    <h:outputText value="#{currentItem.description}">
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Active">
+                    <h:outputText value="#{currentItem.active ? 'Active' : 'Inactive'}">
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Version">
+                    <h:outputText id="version" value="#{currentItem.version}">
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Create Time">
+                    <h:outputText id="createTime" value="#{currentItem.createTime}">
+                        <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd h:mm a"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Update Time">
+                    <h:outputText id="updateTime" value="#{currentItem.updateTime}">
+                        <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd h:mm a"/>
+                    </h:outputText>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

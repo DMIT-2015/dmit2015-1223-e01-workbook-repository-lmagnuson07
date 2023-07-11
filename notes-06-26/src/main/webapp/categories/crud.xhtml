@@ -1,0 +1,165 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:faces="jakarta.faces"
+        xmlns:ui="jakarta.faces.facelets"
+        xmlns:f="jakarta.faces.core"
+        xmlns:h="jakarta.faces.html"
+        xmlns:pt="jakarta.faces.passthrough"
+        xmlns:cc="jakarta.faces.composite"
+        xmlns:c="jakarta.tags.core"
+        xmlns:fn="jakarta.tags.functions"
+        xmlns:o="http://omnifaces.org/ui"
+        xmlns:of="http://omnifaces.org/functions"
+        xmlns:p="http://primefaces.org/ui"
+        template="/WEB-INF/faces-templates/layout.xhtml"
+>
+
+    <ui:param name="title" value="Category - CRUD"/>
+
+    <ui:param name="internalstyles"
+              value=".Categorys-table-header { display: flex; align-items:center; justify-content: space-between; flex-wrap: wrap; }"/>
+
+    <ui:define name="maincontent">
+
+        <div class="card">
+            <h:form id="form">
+                <p:growl id="growl" showDetail="true">
+                    <p:autoUpdate/>
+                </p:growl>
+
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="New" icon="pi pi-plus"
+                                         actionListener="#{currentCategoryCrudView.onOpenNew}"
+                                         update=":dialogs:manage-Category-content"
+                                         oncomplete="PF('manageCategoryDialog').show()"
+                                         styleClass="ui-button-success" style="margin-right: .5rem">
+                            <p:resetInput target=":dialogs:manage-Category-content"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="Import Data"
+                                         icon="pi pi-file-import"
+                                         action="#{currentCategoryCrudView.onImportData}"
+                                         update="dialogs:manage-Category-content"
+                                         styleClass="ui-button-success" style="margin-right: .5rem"
+                        >
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <p:dataTable id="dt-Categorys" widgetVar="dtCategorys"
+                             value="#{currentCategoryCrudView.categoryList}"
+                             rendered="#{not empty currentCategoryCrudView.categoryList}"
+                             var="currentItem"
+                             reflow="true"
+                             selection="#{currentCategoryCrudView.selectedCategory}"
+                             rowKey="#{currentItem.categoryId}"
+                             paginator="true" rows="10"
+                             paginatorPosition="bottom">
+
+                    <f:facet name="header">
+                        <div class="Categorys-table-header">
+                            <span style="font-weight: bold">Categorys</span>
+                            <span class="filter-container ui-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <p:inputText id="globalFilter" onkeyup="PF('dtCategorys').filter()"
+                                             placeholder="Search"/>
+                            </span>
+                        </div>
+                    </f:facet>
+
+                    <p:column headerText="Username">
+                        <h:outputText value="#{currentItem.username}"/>
+                    </p:column>
+                    <p:column headerText="Category ID">
+                        <h:outputText value="#{currentItem.categoryId}"/>
+                    </p:column>
+                    <p:column headerText="Description">
+                        <h:outputText value="#{currentItem.description}"/>
+                    </p:column>
+                    <p:column headerText="Active">
+                        <h:outputText value="#{currentItem.active ? 'Active' : 'Inactive'}"/>
+                    </p:column>
+
+                    <p:column exportable="false">
+                        <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-Category-content"
+                                         oncomplete="PF('manageCategoryDialog').show()"
+                                         styleClass="edit-button rounded-button ui-button-success" process="@this">
+                            <f:setPropertyActionListener value="#{currentItem}"
+                                                         target="#{currentCategoryCrudView.selectedCategory}"/>
+                            <f:setPropertyActionListener value="#{currentItem.categoryId}"
+                                                         target="#{currentCategoryCrudView.selectedId}"/>
+                            <p:resetInput target=":dialogs:manage-Category-content"/>
+                        </p:commandButton>
+                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                         process="@this"
+                                         oncomplete="PF('deleteCategoryDialog').show()">
+                            <f:setPropertyActionListener value="#{currentItem}"
+                                                         target="#{currentCategoryCrudView.selectedCategory}"/>
+                            <f:setPropertyActionListener value="#{currentItem.categoryId}"
+                                                         target="#{currentCategoryCrudView.selectedId}"/>
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+
+            <h:form id="dialogs">
+                <p:dialog header="Category Details" showEffect="fade" modal="true" widgetVar="manageCategoryDialog"
+                          responsive="true">
+
+                    <p:messages id="messages">
+                        <p:autoUpdate/>
+                    </p:messages>
+
+                    <p:outputPanel id="manage-Category-content" class="ui-fluid">
+                        <p:outputPanel rendered="#{not empty currentCategoryCrudView.selectedCategory}">
+                            <div class="field">
+                                <p:outputLabel for="@next">Description</p:outputLabel>
+                                <p:inputText
+                                        id="description"
+                                        value="#{currentCategoryCrudView.selectedCategory.description}">
+                                </p:inputText>
+                            </div>
+
+                            <div class="field">
+                                <p:selectBooleanCheckbox
+                                        id="active"
+                                        itemLabel="Active"
+                                        value="#{currentCategoryCrudView.selectedCategory.active}"/>
+                            </div>
+
+
+                        </p:outputPanel>
+                    </p:outputPanel>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Save" icon="pi pi-check"
+                                         actionListener="#{currentCategoryCrudView.onSave}"
+                                         update="manage-Category-content" process="manage-Category-content @this"/>
+                        <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageCategoryDialog').hide()"
+                                         class="ui-button-secondary" type="button"/>
+                    </f:facet>
+                </p:dialog>
+
+                <p:confirmDialog widgetVar="deleteCategoryDialog" showEffect="fade" width="300"
+                                 message="Delete the Category?" header="Confirm" severity="warn">
+                    <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{currentCategoryCrudView.onDelete}"
+                                     process="@this"
+                                     oncomplete="PF('deleteCategoryDialog').hide()"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                     onclick="PF('deleteCategoryDialog').hide()"/>
+                </p:confirmDialog>
+
+                <p:confirmDialog global="true" showEffect="fade" width="300">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                     icon="pi pi-times"/>
+                </p:confirmDialog>
+            </h:form>
+
+        </div>
+
+    </ui:define>
+
+</ui:composition>

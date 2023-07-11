@@ -1,0 +1,104 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:faces="jakarta.faces"
+        xmlns:ui="jakarta.faces.facelets"
+        xmlns:f="jakarta.faces.core"
+        xmlns:h="jakarta.faces.html"
+        xmlns:pt="jakarta.faces.passthrough"
+        xmlns:cc="jakarta.faces.composite"
+        xmlns:c="jakarta.tags.core"
+        xmlns:fn="jakarta.tags.functions"
+        xmlns:o="http://omnifaces.org/ui"
+        xmlns:of="http://omnifaces.org/functions"
+        xmlns:p="http://primefaces.org/ui"
+        template="/WEB-INF/faces-templates/layout.xhtml"
+>
+
+    <ui:param name="title" value="Expense - Edit"/>
+
+    <ui:define name="maincontent">
+
+        <h1>Edit Expense</h1>
+
+        <p:messages id="messages"/>
+
+        <h:form prependId="false">
+
+            <p:panel header="Expense Details">
+                <div class="ui-fluid">
+                    <div class="field">
+                        <label for="entityId">ID</label>
+                        <p:inputText id="entityId"
+                                     label="ExpenseID"
+                                     value="#{currentExpenseEditView.editId}"
+                                     readonly="true">
+                        </p:inputText>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="@next">Description</p:outputLabel>
+                        <p:inputText
+                                id="description"
+                                value="#{currentExpenseEditView.existingExpense.description}">
+                        </p:inputText>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="@next">Category</p:outputLabel>
+                        <p:selectOneMenu id="categoryId" value="#{currentExpenseEditView.selectedCategoryId}">
+                            <f:selectItem itemLabel="---select a category---" itemValue=""/>
+                            <f:selectItems value="#{currentExpenseEditView.categorytList}"
+                                           var="currentCategoryItem"
+                                           itemLabel="#{currentCategoryItem.description}"
+                                           itemValue="#{currentCategoryItem.categoryId}" />
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="@next">Amount</p:outputLabel>
+                        <p:inputText
+                                id="amount"
+                                value="#{currentExpenseEditView.existingExpense.amount}">
+                        </p:inputText>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="@next">Total</p:outputLabel>
+                        <p:inputText
+                                id="total"
+                                value="#{currentExpenseEditView.existingExpense.total}">
+                        </p:inputText>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="@next">Date</p:outputLabel>
+                        <p:calendar
+                                id="expenseDate"
+                                value="#{currentExpenseEditView.existingExpense.expenseDate}"
+                                pattern="yyyy-MM-dd">
+                        </p:calendar>
+                    </div>
+
+
+                </div>
+
+                <p:commandButton
+                        id="updateButton"
+                        value="Save"
+                        icon="pi pi-save"
+                        action="#{currentExpenseEditView.onUpdate()}"
+                        update=":messages @form"/>
+
+
+            </p:panel>
+
+            <p>
+                <p:link id="backToListLink" outcome="index" value="Back to List">
+                </p:link>
+            </p>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
