@@ -1,0 +1,26 @@
+### Get a JWT for DELE using LDAP Authentication
+POST http://localhost:8080/api/jwt/ldapJsonLogin
+Content-Type: application/json
+
+{
+"username":"DLEE",
+"password":"Password2015"
+}
+
+### Get a JWT for JCHEN using LDAP Authentication
+POST http://localhost:8080/api/jwt/ldapJsonLogin
+Content-Type: application/json
+
+{
+  "username":"JCHEN",
+  "password":"Password2015"
+}
+
+### Get a JWT for DELE using LDAP Authentication
+POST http://localhost:8080/api/jwt/jsonLogin
+Content-Type: application/json
+
+{
+  "username":"DLEE@dmit2015.ca",
+  "password":"Password2015"
+}

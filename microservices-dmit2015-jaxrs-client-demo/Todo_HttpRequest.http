@@ -1,0 +1,52 @@
+### Get all Expenses
+GET http://localhost:8080/api/TodoItems
+
+### Get a single Expense with an id of 1
+GET http://localhost:8080/api/TodoItems/1
+
+### POST a new Expense with valid data
+POST http://localhost:8080/api/TodoItems
+Content-Type: application/json
+
+{
+  "description": "Rest Assured Expense Test",
+  "categoryId": 3,
+  "amount": 12.34,
+  "total": 1,
+  "expenseDate": "2023-04-26"
+}
+
+### POST a new Expense with invalid data
+POST http://localhost:8080/api/TodoItems
+Content-Type: application/json
+
+{
+  "description": "      ",
+  "categoryId": 2,
+  "amount": 12.34,
+  "total": 1,
+  "expenseDate": "2023-04-26"
+}
+
+### Get a single Expense with an id of 4
+GET http://localhost:8080/api/TodoItems/4
+
+### Update Expense with an id of 4 with valid data
+PUT http://localhost:8080/api/TodoItems/4
+Content-Type: application/json
+
+{
+  "expenseId": 4,
+  "description": "Updated Rest Assured Expense",
+  "categoryId": 2,
+  "amount": 23.45,
+  "total": 2,
+  "expenseDate": "2023-04-28",
+  "version": 0
+}
+
+### Delete a Expense with an id of 2. Must delete child expense records first.
+DELETE http://localhost:8080/api/TodoItems/2
+
+### Delete a Expense with an id of 4
+DELETE http://localhost:8080/api/TodoItems/4

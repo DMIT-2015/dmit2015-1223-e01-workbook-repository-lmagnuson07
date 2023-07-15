@@ -1,0 +1,26 @@
+### Get a JWT for DELE using LDAP Authentication
+POST http://localhost:8180/restapi/jwt/ldapJsonLogin
+Content-Type: application/json
+
+{
+  "username":"DLEE",
+  "password":"Password2015"
+}
+
+### Get a JWT for DELE using LDAP Authentication
+POST http://localhost:8180/restapi/jwt/ldapJsonLogin
+Content-Type: application/json
+
+{
+  "username":"JSEO",
+  "password":"Password2015"
+}
+
+### Get a JWT for DELE using LDAP Authentication
+POST http://localhost:8180/restapi/jwt/ldapJsonLogin
+Content-Type: application/json
+
+{
+  "username":"DLEE",
+  "password":" Password2015"
+}
