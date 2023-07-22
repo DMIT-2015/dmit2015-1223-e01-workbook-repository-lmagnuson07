@@ -1,4 +1,4 @@
-package dmit2015.entity.batch;
+package dmit2015.batch;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

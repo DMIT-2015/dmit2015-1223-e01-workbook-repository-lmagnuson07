@@ -1,4 +1,4 @@
-package dmit2015.entity.batch;
+package dmit2015.batch;
 
 import jakarta.batch.api.listener.AbstractStepListener;
 import jakarta.batch.runtime.context.JobContext;

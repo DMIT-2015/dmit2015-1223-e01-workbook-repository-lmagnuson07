@@ -29,12 +29,20 @@ import jakarta.enterprise.context.ApplicationScoped;
 //		password="RemotePassword.200012345"), // replace 200012345 with your NAIT StudentID
 
 
-	@DataSourceDefinition(
-		name="java:app/datasources/oracleUser2015DS",
-		className="oracle.jdbc.pool.OracleDataSource",
-		url="jdbc:oracle:thin:@localhost:1521/FREEPDB1",
-		user="user2015",
-		password="Password2015"),
+//	@DataSourceDefinition(
+//		name="java:app/datasources/oracleUser2015DS",
+//		className="oracle.jdbc.pool.OracleDataSource",
+//		url="jdbc:oracle:thin:@localhost:1521/FREEPDB1",
+//		user="user2015",
+//		password="Password2015"),
+
+		 @DataSourceDefinition(
+		 	name="java:app/datasources/mariadbDS",
+		 	className="org.mariadb.jdbc.MariaDbDataSource",
+		 	url="jdbc:mariadb://172.30.74.43:3306/DMIT2015CourseDB",
+		 	user="user2015",
+		 	password="Password2015"),
+
 //	@DataSourceDefinition(
 //		name="java:app/datasources/oracleHrDS",
 //		className="oracle.jdbc.pool.OracleDataSource",

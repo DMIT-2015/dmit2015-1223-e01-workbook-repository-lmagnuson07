@@ -1,0 +1,14 @@
+build:
+  bootableJar:
+    builderImage: 'registry.access.redhat.com/ubi8/openjdk-17:latest'
+  contextDir: dmit2015-batch-demo
+  mode: bootable-jar
+  ref: main
+  uri: https://github.com/DMIT-2015/dmit2015-1223-e01-workbook-repository-lmagnuson07.git
+deploy:
+  env:
+    - name: JAVA_DEBUG
+      value: 'true'
+    - name: JAVA_DEBUG_PORT
+      value: '8787'
+  replicas: 1
